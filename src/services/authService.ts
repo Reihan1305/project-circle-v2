@@ -54,6 +54,9 @@ const login = async (body: User): Promise<{ token: string }> => {
    // 2. check existing email
    const existEmail = await db.user.findFirst({
       where:{email: value.email},
+      include:{
+         profile:true
+      }
    });
 
    if (!existEmail) {

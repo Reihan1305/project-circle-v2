@@ -4,9 +4,9 @@ import { errorHandler } from "../utils/errorHandler";
 
 export const getSingleUser = async (req: Request, res: Response) => {
    try {
-      const userId = req.params.userId;
+      const id = req.params.userId;
 
-      const dataUser = await userService.getSingleUser({userId});
+      const dataUser = await userService.getSingleUser({id});
 
       res.status(200).json(dataUser);
    } catch (error) {

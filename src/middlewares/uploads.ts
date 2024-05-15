@@ -30,7 +30,7 @@ const upload = multer({
       maxCount: 4,
    },
    {
-      name: "avatar",
+      name: "photoProfile",
       maxCount: 1,
    },
    {
