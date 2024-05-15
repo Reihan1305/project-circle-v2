@@ -14,14 +14,17 @@ export const like = async (threadId:string,userId:string) =>{
     })
 
     if(existtingLike){
-        return await db.like.delete({
+        const deleteLike =await db.like.delete({
             where:{threadId:threadId,userId:userId}
         })
+        return {deleteLike,message:"unlike success"}
     }
-    return db.like.create({
+    const like = db.like.create({
         data:{
             threadId:threadId,
             userId:userId
         }
     })
+
+    return {like,message:"like success"}
 }

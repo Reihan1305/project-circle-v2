@@ -2,18 +2,19 @@ import { User } from "@prisma/client";
 import db from "../lib/db";
 import { ERROR_MESSAGE } from "../utils/constant/error";
 
-export const getUser = async (id: string): Promise<User | null> => {
+export const getSingleUser = async (condition: {[key: string]: string;}): Promise<User | null> => {
    return db.user.findFirst({
-      where: {
-         id,
-      },include:{
+      where: condition
+      ,include:{
          follower:true,
-         following:true
+         following:true,
+         profile:true,
+         threads:true
       }
    });
 };
 
-export const insertUser = async (body: User): Promise<User> => {
+export const createUser = async (body: User): Promise<User> => {
    return db.user.create({
       data: body,
    });
@@ -39,10 +40,7 @@ export const deleteUser = async (id: string): Promise<string> => {
    return "Sukses delete user dengan id " + id;
 };
 
-export const updateUser = async (
-   id: string,
-   body: User
-): Promise<User | Error> => {
+export const updateUser = async (id: string,body: User): Promise<User | Error> => {
    const existUser = await db.user.findFirst({
       where: {
          id,
@@ -61,19 +59,6 @@ export const updateUser = async (
    });
 };
 
-export function updateUserV2(id: string, body: User): Promise<User> {
-   return db.user.update({
-      where: {
-         id,
-      },
-      data: body,
-   });
-}
 
-export const getSingleUser = async (condition: {[key: string]: string;}): Promise<User | null> => {
-   return db.user.findFirst({
-      where: condition,
-   });
-};
 
 //parameter  (condition: {[key: string]: string;}) berarti bisa menerima key berbeda beda dengan jenis string contoh diatas bisa menggunakan param id

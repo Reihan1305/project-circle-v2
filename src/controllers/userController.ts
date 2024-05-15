@@ -2,12 +2,11 @@ import { Request, Response } from "express";
 import * as userService from "../services/userService";
 import { errorHandler } from "../utils/errorHandler";
 
-export const getUser = async (req: Request, res: Response) => {
+export const getSingleUser = async (req: Request, res: Response) => {
    try {
-      const { params } = req;
-      const { userId } = params;
+      const userId = req.params.userId;
 
-      const dataUser = await userService.getUser(userId);
+      const dataUser = await userService.getSingleUser({userId});
 
       res.status(200).json(dataUser);
    } catch (error) {
@@ -25,7 +24,7 @@ export const createUser = async (req: Request, res: Response) => {
    try {
       const { body } = req;
 
-      const dataInsertUser = await userService.insertUser(body);
+      const dataInsertUser = await userService.createUser(body);
 
       res.status(200).json(dataInsertUser);
    } catch (error) {

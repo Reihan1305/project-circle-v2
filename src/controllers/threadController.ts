@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import * as threadService from "../services/threadService";
 import { errorHandler } from "../utils/errorHandler";
-import { threadId } from "worker_threads";
 
 export const getThread = async (req: Request, res: Response) => {
    try {
@@ -35,7 +34,7 @@ export const createThreads = async (req: Request, res: Response) => {
          [fieldname: string]: Express.Multer.File[];
       };
 
-      res.status(200).json(await threadService.insertThread(body, files));
+      res.status(200).json(await threadService.createThread(body, files));
    } catch (error) {
       console.log(error);
 
@@ -56,3 +55,22 @@ export const deleteThread = async(req:Request,res:Response) =>{
       
    }
 }
+
+export const updateThread = async (req: Request, res: Response) => {
+   try {
+      const threadId = req.params.threadId
+      const body = req.body;
+      body.userId = res.locals.userId;
+
+      const files = req.files as {
+         [fieldname: string]: Express.Multer.File[];
+      };
+
+      res.status(200).json(await threadService.updateThread(threadId, body, files));
+   } catch (error) {
+      console.log(error);
+
+      errorHandler(error, res);
+   }
+};
+

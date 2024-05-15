@@ -28,9 +28,10 @@ export const follow = async(followingId:string,followerId:string) =>{
     })
 
     if(existingFollow){
-        return await db.follow.delete({
+        const deleteFollow =await db.follow.delete({
             where:{followerId_followingId:existingFollow}
         })
+        return {deleteFollow,message:"unfollow success"}
     }
 
     const follow = await db.follow.create({
@@ -40,5 +41,5 @@ export const follow = async(followingId:string,followerId:string) =>{
         }
     })
 
-    return follow
+    return {follow, message:"follow successfull"}
 }

@@ -1,38 +1,44 @@
 import * as userService from "./userService";
-import { User } from "@prisma/client";
+import { User, UserProfile } from "@prisma/client";
 import schemaRegister from "../lib/validation/registerValidation";
 import { ERROR_MESSAGE } from "../utils/constant/error";
 import bcrypt from "bcrypt";
 import loginSchema from "../lib/validation/loginValidation";
 import jwt from "jsonwebtoken";
+import db from "../lib/db";
 
-const register = async (body: User): Promise<{ id: string }> => {
-   // 1. validate user
+const register = async (body: User): Promise<{ id: string,userProfile:UserProfile }> => {
    const { error, value } = schemaRegister.validate(body);
    if (error?.details) {
       console.log(error);
-
       throw new Error(ERROR_MESSAGE.WRONG_INPUT);
    }
-
-   // 2. check existing email
+   
    const existEmail = await userService.getSingleUser({
       email: value.email,
    });
-
    if (existEmail) {
       throw new Error(ERROR_MESSAGE.EXISTED_DATA);
    }
-
-   // 3. hash password
+ 
    const hashedPassword = await bcrypt.hash(value.password, 10);
-
-   const user = await userService.insertUser({
+   
+   const user = await userService.createUser({
       ...value,
       password: hashedPassword,
    });
-
-   return { id: user.id };
+   const username = `user_${user.id.substring(0, 8).replace(/-/g, '')}_${body.fullname.replace(/\s/g, '_')}`
+   
+   const userProfile = await db.userProfile.create({
+      data:{
+      username:username,
+      userId:user.id,
+      photoProfile:"",
+      cover:"",
+      bio:""
+   }
+   })
+   return { id: user.id,userProfile};
 };
 
 const login = async (body: User): Promise<{ token: string }> => {
@@ -46,8 +52,8 @@ const login = async (body: User): Promise<{ token: string }> => {
    }
 
    // 2. check existing email
-   const existEmail = await userService.getSingleUser({
-      email: value.email,
+   const existEmail = await db.user.findFirst({
+      where:{email: value.email},
    });
 
    if (!existEmail) {

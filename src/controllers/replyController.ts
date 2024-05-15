@@ -12,10 +12,42 @@ export const createReply = async (req:Request,res:Response) =>{
             [fieldname: string]: Express.Multer.File[];
          };
    
-        return res.status(200).json(replyService.createReply(body,files))
+        return res.status(200).json(await replyService.createReply(body,files))
     } catch (error) {
         console.log(error);
         
         return errorHandler(error,res)
     }
 }
+
+export const deleteReply = async(req:Request,res:Response) =>{
+    try {
+    const replyId = req.params.replyId
+    const userId = res.locals.userId
+ 
+    res.status(201).json(await replyService.deleteReply(replyId,userId))
+    
+    } catch (error) {
+     console.log(error);
+     return errorHandler(error,res)
+       
+    }
+ }
+
+ export const updateReply = async (req: Request, res: Response) => {
+    try {
+       const replyId = req.params.replyId
+       const body = req.body;
+       body.userId = res.locals.userId;
+ 
+       const files = req.files as {
+          [fieldname: string]: Express.Multer.File[];
+       };
+ 
+       res.status(200).json(await replyService.updateReply(replyId, body, files));
+    } catch (error) {
+       console.log(error);
+ 
+       errorHandler(error, res);
+    }
+ };

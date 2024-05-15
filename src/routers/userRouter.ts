@@ -4,7 +4,7 @@ import authentication from "../middlewares/authentication";
 
 const userRouter = Router();
 
-userRouter.get("/:userId", authentication, userController.getUser);
+userRouter.get("/:userId", authentication, userController.getSingleUser);
 userRouter.post("/", userController.createUser);
 userRouter.delete("/:userId", userController.deleteUser);
 userRouter.put("/:userId", userController.updateUser);

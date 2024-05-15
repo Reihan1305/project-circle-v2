@@ -21,7 +21,18 @@ model User {
   threads   Thread[]
   follower Follow[] @relation("follower")
   following Follow[] @relation("following")
-  Like Like[]
+  Like      Like[]
+  profile UserProfile?
+}
+
+model UserProfile {
+  id String @id @default(uuid())
+  username String
+  photoProfile String
+  cover String
+  bio String
+  userId String @unique
+  User  User @relation(fields: [userId],references: [id],onDelete: Cascade)
 }
 
 model Thread {
@@ -29,10 +40,10 @@ model Thread {
   content String
   userId  String
   threadId String?
-  author  User @relation(fields: [userId], references: [id])
+  author  User @relation(fields: [userId], references: [id],onDelete: Cascade)
   images  Image[]
   like    Like[]
-  parents Thread?   @relation("reply",fields: [threadId],references: [id])
+  parents Thread?   @relation("reply",fields: [threadId],references: [id],onDelete: Cascade)
   reply   Thread[]  @relation("reply")
 }
 
@@ -40,13 +51,13 @@ model Image {
   id Int @id @default(autoincrement())
   imageUrl String
   threadId String
-  thread   Thread @relation(fields: [threadId], references: [id])
+  thread   Thread @relation(fields: [threadId], references: [id],onDelete: Cascade)
 }
 
 model Follow {
-  follower  User @relation("follower",fields: [followerId],references: [id])
+  follower  User @relation("follower",fields: [followerId],references: [id],onDelete: Cascade)
   followerId String
-  following User @relation("following", fields: [followingId],references: [id])
+  following User @relation("following", fields: [followingId],references: [id],onDelete: Cascade)
   followingId String
   @@id([followerId,followingId])
 }
@@ -54,8 +65,8 @@ model Follow {
 model Like {
   userId String
   threadId String
-  user User @relation(fields: [userId],references: [id])
-  thread Thread @relation(fields: [threadId],references: [id])
+  user User @relation(fields: [userId],references: [id],onDelete: Cascade)
+  thread Thread @relation(fields: [threadId],references: [id],onDelete: Cascade)
 
   @@id([userId])
 }
