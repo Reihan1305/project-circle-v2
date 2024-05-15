@@ -13,14 +13,49 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Test {
-  id   Int    @id @default(autoincrement())
-  test String
-}
-
 model User {
   id       String @id @default(uuid())
   fullname String
   email    String
   password String
+  threads   Thread[]
+  follower Follow[] @relation("follower")
+  following Follow[] @relation("following")
+  Like Like[]
+}
+
+model Thread {
+  id      String @id @default(uuid())
+  content String
+  userId  String
+  threadId String?
+  author  User @relation(fields: [userId], references: [id])
+  images  Image[]
+  like    Like[]
+  parents Thread?   @relation("reply",fields: [threadId],references: [id])
+  reply   Thread[]  @relation("reply")
+}
+
+model Image {
+  id Int @id @default(autoincrement())
+  imageUrl String
+  threadId String
+  thread   Thread @relation(fields: [threadId], references: [id])
+}
+
+model Follow {
+  follower  User @relation("follower",fields: [followerId],references: [id])
+  followerId String
+  following User @relation("following", fields: [followingId],references: [id])
+  followingId String
+  @@id([followerId,followingId])
+}
+
+model Like {
+  userId String
+  threadId String
+  user User @relation(fields: [userId],references: [id])
+  thread Thread @relation(fields: [threadId],references: [id])
+
+  @@id([userId])
 }

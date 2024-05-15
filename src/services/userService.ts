@@ -6,7 +6,10 @@ export const getUser = async (id: string): Promise<User | null> => {
    return db.user.findFirst({
       where: {
          id,
-      },
+      },include:{
+         follower:true,
+         following:true
+      }
    });
 };
 

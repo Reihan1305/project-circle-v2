@@ -60,7 +60,7 @@ const login = async (body: User): Promise<{ token: string }> => {
       throw new Error(ERROR_MESSAGE.DATA_NOT_FOUND);
    }
 
-   const token = jwt.sign(value, process.env.SECRET_KEY!, {
+   const token = jwt.sign(existEmail, process.env.SECRET_KEY!, {
       expiresIn: "1d",
    });
 
