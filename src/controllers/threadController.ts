@@ -12,6 +12,16 @@ export const getThread = async (req: Request, res: Response) => {
       errorHandler(error, res);
    }
 };
+export const getThreadsByuserId = async (req: Request, res: Response) => {
+   try {
+      const userId = req.params.userId;
+      res.status(200).json(await threadService.getThreadbyUserid(userId));
+   } catch (error) {
+      console.log(error);
+
+      errorHandler(error, res);
+   }
+};
 
 export const getThreads = async (req: Request, res: Response) => {
    try {
@@ -52,7 +62,6 @@ export const deleteThread = async(req:Request,res:Response) =>{
    } catch (error) {
     console.log(error);
     return errorHandler(error,res)
-      
    }
 }
 
@@ -60,7 +69,8 @@ export const updateThread = async (req: Request, res: Response) => {
    try {
       const threadId = req.params.threadId
       const body = req.body;
-      body.userId = res.locals.userId;
+      body.userId = res.locals.userId
+      body.updateAt = new Date()
 
       const files = req.files as {
          [fieldname: string]: Express.Multer.File[];
@@ -73,4 +83,15 @@ export const updateThread = async (req: Request, res: Response) => {
       errorHandler(error, res);
    }
 };
+
+// export const findAllImage = async (req:Request,res:Response) =>{
+//    try {
+//       const userId = res.locals.userId
+
+//       return res.status(200).json(await threadService.findImage(userId))
+//    } catch (error) {
+//       console.log(error)
+//       return errorHandler(error,res)
+//    }
+// }
 

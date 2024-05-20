@@ -6,6 +6,7 @@ export const like = async(req:Request,res:Response) =>{
     try {
         const threadId = req.params.threadId
         const userId = res.locals.userId
+        
 
         return res.status(200).json(await likeService.like(threadId,userId))
     } catch (error) {

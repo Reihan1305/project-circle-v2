@@ -4,9 +4,14 @@ import authentication from "../middlewares/authentication";
 
 const userRouter = Router();
 
+// Define more specific routes before less specific ones
+userRouter.get("/login", authentication, userController.getLoginUser);
+userRouter.get("/suggested", authentication, userController.getSugestedUser); // This line is moved up
+userRouter.get("/", authentication, userController.getSugestedUser); // This line is moved up
+userRouter.get("/name/:fullname", authentication, userController.getUserByName);
 userRouter.get("/:userId", authentication, userController.getSingleUser);
 userRouter.post("/", userController.createUser);
-userRouter.delete("/:userId", userController.deleteUser);
-userRouter.put("/:userId", userController.updateUser);
+userRouter.delete("/", authentication, userController.deleteUser);
+userRouter.put("/", authentication, userController.updateUser);
 
 export default userRouter;

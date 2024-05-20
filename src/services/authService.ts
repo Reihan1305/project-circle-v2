@@ -7,7 +7,7 @@ import loginSchema from "../lib/validation/loginValidation";
 import jwt from "jsonwebtoken";
 import db from "../lib/db";
 
-const register = async (body: User): Promise<{ id: string,userProfile:UserProfile }> => {
+export const register = async (body: User): Promise<{ id: string,userProfile:UserProfile }> => {
    const { error, value } = schemaRegister.validate(body);
    if (error?.details) {
       console.log(error);
@@ -41,7 +41,7 @@ const register = async (body: User): Promise<{ id: string,userProfile:UserProfil
    return { id: user.id,userProfile};
 };
 
-const login = async (body: User): Promise<{ token: string }> => {
+export const login = async (body: User): Promise<{ token: string }> => {
    // 1. validate input
    const { error, value } = loginSchema.validate(body);
 
@@ -76,4 +76,3 @@ const login = async (body: User): Promise<{ token: string }> => {
    return { token };
 };
 
-export { register, login };

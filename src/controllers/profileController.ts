@@ -1,6 +1,8 @@
 import *as profileService from "../services/profileService";
 import { Request,Response } from "express";
 import { errorHandler } from "../utils/errorHandler";
+import cloudinary from "../config";
+import fs from "fs"
 
 export const updateProfile = async(req:Request,res:Response) => {
     try {
@@ -11,11 +13,20 @@ export const updateProfile = async(req:Request,res:Response) => {
         const cover = files?.cover[0]?.filename
 
         if(photoProfile){
-            body.photoProfile = photoProfile
+            const cloudUpload = await cloudinary.uploader.upload(photoProfile , {
+                folder:"circle53"
+            })
+            fs.unlinkSync(photoProfile)
+            body.photoProfile = cloudUpload.secure_url
+
         }
 
         if(cover){
-            body.cover = cover
+            const cloudUpload = await cloudinary.uploader.upload(cover , {
+                folder:"circle53"
+            })
+            fs.unlinkSync(cover)
+            body.cover = cloudUpload.secure_url
         }
 
         await profileService.updateProfile(body,userId)

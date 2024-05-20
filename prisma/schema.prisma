@@ -45,6 +45,8 @@ model Thread {
   like    Like[]
   parents Thread?   @relation("reply",fields: [threadId],references: [id],onDelete: Cascade)
   reply   Thread[]  @relation("reply")
+  createdAt DateTime @default(now())
+  updatedAt DateTime?
 }
 
 model Image {
@@ -68,5 +70,5 @@ model Like {
   user User @relation(fields: [userId],references: [id],onDelete: Cascade)
   thread Thread @relation(fields: [threadId],references: [id],onDelete: Cascade)
 
-  @@id([userId])
+  @@id([userId,threadId])
 }
