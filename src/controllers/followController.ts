@@ -7,7 +7,7 @@ export const follow = async(req:Request,res:Response) =>{
         const followingId = res.locals.userId
         
 
-        return res.status(200).json(await followService.follow(followingId,followerId))
+        return res.status(200).json(await followService.follow(followerId,followingId))
     } catch (error) {
         
     }

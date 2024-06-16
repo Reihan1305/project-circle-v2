@@ -14,7 +14,49 @@ export const getSingleUser = async (condition: {
   return db.user.findFirst({
     where: condition,
     include: {
-      follower: true,
+      follower:{
+        select:{
+          followerId:true,
+          followingId:true,
+          following:{
+            select:{
+              id:true,
+              fullname:true,
+              profile:true
+            }
+          },
+          isFollow:true
+        }
+      },
+      following:{
+        select:{
+          follower:{
+            select:{
+              id:true,
+              fullname:true,
+              profile:true
+            }
+          },
+          followerId:true,
+          followingId:true,
+          isFollow:true
+        }
+      },
+      profile: true,
+      threads: true,
+    },
+  });
+};
+export const getUserByName = async (fullname:string): Promise<User[] | null> => {
+  return await db.user.findMany({
+    where: {fullname},
+    include: {
+      follower: {
+        select:{
+          follower:{
+          }
+        }
+      },
       following: true,
       profile: true,
       threads: true,
@@ -35,6 +77,9 @@ export const updateUser = async (
   if (!existUser) {
     throw new Error("User tidak ditemukan!");
   }
+
+  console.log(body);
+  
 
   return db.user.update({
     where: {

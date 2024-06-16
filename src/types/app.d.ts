@@ -3,6 +3,7 @@ export interface IErrorObj {
 }
 
 export interface IProfile {
+   fullname:string,
    username: string,
    photoProfile?: string,
    cover?:string,

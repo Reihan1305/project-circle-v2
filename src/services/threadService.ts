@@ -39,6 +39,7 @@ export const getThread = async (id: string) => {
             select: {
                id: true,
                fullname: true,
+               profile:true
             },
          },
          images: {
@@ -47,7 +48,23 @@ export const getThread = async (id: string) => {
             },
          },
          like:true,
-         reply:true
+         reply:{
+            select:{
+               author:{
+                  include:{
+                     profile:true
+                  }
+               },
+               content:true,
+               createdAt:true,
+               id:true,
+               images:true,
+               like:true,
+               reply:true,
+               threadId:true,
+               updatedAt:true
+            }
+         }
       },
    });
 };
@@ -61,6 +78,7 @@ export const getThreadbyUserid = async (id: string) => {
             select: {
                id: true,
                fullname: true,
+               profile:true
             },
          },
          images: {
@@ -70,7 +88,9 @@ export const getThreadbyUserid = async (id: string) => {
          },
          like:true,
          reply:true
-      },
+      },orderBy:{
+         createdAt:'desc'
+      }
    });
 };
 

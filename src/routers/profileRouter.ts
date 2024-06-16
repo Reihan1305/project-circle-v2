@@ -5,6 +5,6 @@ import uploadMiddleware from "../middlewares/uploads";
 
 const profileRouter = Router()
 
-profileRouter.put("/",authentication,uploadMiddleware(),profileController.updateProfile)
+profileRouter.put("/update",authentication,uploadMiddleware(),profileController.updateProfile)
 
 export default profileRouter

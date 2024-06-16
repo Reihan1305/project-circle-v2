@@ -7,7 +7,7 @@ import authentication from "../middlewares/authentication";
 const threadRoute = Router();
 
 //for thread
-threadRoute.get("/:threadId", threadController.getThread);
+threadRoute.get("/detail/:threadId", threadController.getThread);
 threadRoute.get("/user/:userId", threadController.getThreadsByuserId);
 threadRoute.get("/", threadController.getThreads);
 threadRoute.post("/",authentication,uploadMiddleware(),threadController.createThreads);

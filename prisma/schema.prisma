@@ -61,6 +61,7 @@ model Follow {
   followerId String
   following User @relation("following", fields: [followingId],references: [id],onDelete: Cascade)
   followingId String
+  isFollow Boolean @default(true)
   @@id([followerId,followingId])
 }
 

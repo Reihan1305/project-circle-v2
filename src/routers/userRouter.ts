@@ -8,7 +8,7 @@ const userRouter = Router();
 userRouter.get("/login", authentication, userController.getLoginUser);
 userRouter.get("/suggested", authentication, userController.getSugestedUser); // This line is moved up
 userRouter.get("/", authentication, userController.getSugestedUser); // This line is moved up
-userRouter.get("/name/:fullname", authentication, userController.getUserByName);
+userRouter.get("/name/:name", authentication, userController.getUserByName);
 userRouter.get("/:userId", authentication, userController.getSingleUser);
 userRouter.post("/", userController.createUser);
 userRouter.delete("/", authentication, userController.deleteUser);

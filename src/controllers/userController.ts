@@ -59,7 +59,7 @@ export const getUserByName = async(req:Request,res:Response) => {
    try {
       const fullname = req.params.name;
 
-      const dataUser = await userService.getSingleUser({fullname});
+      const dataUser = await userService.getUserByName(fullname);
 
       res.status(200).json(dataUser);
    } catch (error) {
