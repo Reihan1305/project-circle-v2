@@ -60,7 +60,39 @@ export const getThread = async (id: string) => {
                id:true,
                images:true,
                like:true,
-               reply:true,
+               reply:{
+                     select:{
+                        author:{
+                           include:{
+                              profile:true
+                           }
+                        },
+                        content:true,
+                        createdAt:true,
+                        id:true,
+                        images:true,
+                        like:true,
+                        reply:{
+                           select:{
+                              author:{
+                                 include:{
+                                    profile:true
+                                 }
+                              },
+                              content:true,
+                              createdAt:true,
+                              id:true,
+                              images:true,
+                              like:true,
+                              reply:true,
+                              threadId:true,
+                              updatedAt:true
+                        }
+                        },
+                        threadId:true,
+                        updatedAt:true
+                  }
+               },
                threadId:true,
                updatedAt:true
             }
