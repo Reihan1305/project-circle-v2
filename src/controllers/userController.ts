@@ -57,9 +57,10 @@ export const getSugestedUser = async(req:Request,res:Response) =>{
 
 export const getUserByName = async(req:Request,res:Response) => {
    try {
+      const userId = res.locals.userId
       const fullname = req.params.name;
 
-      const dataUser = await userService.getUserByName(fullname);
+      const dataUser = await userService.getUserByName(fullname,userId);
 
       res.status(200).json(dataUser);
    } catch (error) {

@@ -14,48 +14,58 @@ export const getSingleUser = async (condition: {
   return db.user.findFirst({
     where: condition,
     include: {
-      follower:{
-        select:{
-          followerId:true,
-          followingId:true,
-          following:{
-            select:{
-              id:true,
-              fullname:true,
-              profile:true
-            }
+      follower: {
+        select: {
+          followerId: true,
+          followingId: true,
+          following: {
+            select: {
+              id: true,
+              fullname: true,
+              profile: true,
+            },
           },
-          isFollow:true
-        }
+          isFollow: true,
+        },
       },
-      following:{
-        select:{
-          follower:{
-            select:{
-              id:true,
-              fullname:true,
-              profile:true
-            }
+      following: {
+        select: {
+          follower: {
+            select: {
+              id: true,
+              fullname: true,
+              profile: true,
+            },
           },
-          followerId:true,
-          followingId:true,
-          isFollow:true
-        }
+          followerId: true,
+          followingId: true,
+          isFollow: true,
+        },
       },
       profile: true,
       threads: true,
     },
   });
 };
-export const getUserByName = async (fullname:string): Promise<User[] | null> => {
+export const getUserByName = async (
+  fullname: string,
+  loggedInUserId:string
+): Promise<User[] | null> => {
   return await db.user.findMany({
-    where: {fullname},
+    where: {
+      fullname: {
+        contains: fullname,
+        mode: "insensitive",
+      },
+      id:{
+        not:loggedInUserId
+      }
+    },
     include: {
       follower: {
-        select:{
-          follower:{
-          }
-        }
+        select: {
+          follower: {},
+        },
       },
       following: true,
       profile: true,
@@ -79,7 +89,6 @@ export const updateUser = async (
   }
 
   console.log(body);
-  
 
   return db.user.update({
     where: {
@@ -113,16 +122,22 @@ export const getSugestedUser = async (loggedInUserId: string) => {
   return await db.user.findMany({
     take: 5,
     where: {
-      id:{
-         not:loggedInUserId
+      id: {
+        not: loggedInUserId,
       },
-      follower:{
-         none:{
-         followingId: loggedInUserId
-         }
-      }
+      follower: {
+        none: {
+          followingId: loggedInUserId,
+        },
+      },
     },
-    select: { id: true, fullname: true, email: true, password: true,profile:true },
+    select: {
+      id: true,
+      fullname: true,
+      email: true,
+      password: true,
+      profile: true,
+    },
   });
 };
 
