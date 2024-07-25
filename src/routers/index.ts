@@ -9,9 +9,9 @@ import profileRouter from "./profileRouter";
 const indexRouter = Router();
 
 indexRouter.use("/user", userRouter);
-indexRouter.use("/auth",authRouter);
-indexRouter.use("/threads",threadRouter);
-indexRouter.use("/profile",profileRouter)
+indexRouter.use("/auth", authRouter);
+indexRouter.use("/threads", threadRouter);
+indexRouter.use("/profile", profileRouter);
 indexRouter.use(followRouter);
 indexRouter.use(likeRouter);
 

@@ -49,7 +49,7 @@ export const getSingleUser = async (condition: {
 };
 export const getUserByName = async (
   fullname: string,
-  loggedInUserId:string
+  loggedInUserId: string
 ): Promise<User[] | null> => {
   return await db.user.findMany({
     where: {
@@ -57,9 +57,9 @@ export const getUserByName = async (
         contains: fullname,
         mode: "insensitive",
       },
-      id:{
-        not:loggedInUserId
-      }
+      id: {
+        not: loggedInUserId,
+      },
     },
     include: {
       follower: {
@@ -87,9 +87,6 @@ export const updateUser = async (
   if (!existUser) {
     throw new Error("User tidak ditemukan!");
   }
-
-  console.log(body);
-
   return db.user.update({
     where: {
       id,

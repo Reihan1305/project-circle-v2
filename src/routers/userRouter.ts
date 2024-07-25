@@ -4,10 +4,9 @@ import authentication from "../middlewares/authentication";
 
 const userRouter = Router();
 
-// Define more specific routes before less specific ones
 userRouter.get("/login", authentication, userController.getLoginUser);
-userRouter.get("/suggested", authentication, userController.getSugestedUser); // This line is moved up
-userRouter.get("/", authentication, userController.getSugestedUser); // This line is moved up
+userRouter.get("/suggested", authentication, userController.getSugestedUser);
+userRouter.get("/", authentication, userController.getSugestedUser);
 userRouter.get("/name/:name", authentication, userController.getUserByName);
 userRouter.get("/:userId", authentication, userController.getSingleUser);
 userRouter.post("/", userController.createUser);
